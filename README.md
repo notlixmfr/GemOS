@@ -1,3 +1,3 @@
-OriginOS WEB 
+GemOS WEB 
 
-OOSP - OriginWEB open source project
+GOSP - OriginWEB open source project variation modified by notlixmfr
