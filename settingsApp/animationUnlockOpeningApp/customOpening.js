@@ -420,13 +420,13 @@ function animationCustomByTXT({
   maxDragNavValue = 150,
 
   // Opening App
-  time_allTmp = 0.25,
-  valScaleApp = 86,
-  valScaleWallpaper = 110,
-  cubic_ratioParam = "cubic-bezier(0.05,0.55,0.2,0.95)",
-  cubic_allParam = "cubic-bezier(0.15,0.45,0.45,0.85)",
+  time_allTmp = 0.45,
+  valScaleApp = 90,
+  valScaleWallpaper = 120,
+  cubic_ratioParam = "cubic-bezier(0.23,0.53,0.49,0.78))",
+  cubic_allParam = "cubic-bezier(0.35,0.52,0.53,0.71)",
 
-  timeHidingIconAppTmp = 0.3,
+  timeHidingIconAppTmp = 0.31,
   delayHidingIconAppTmp = 0,
 
   timeShowingIconAppTmp = 0.3,
@@ -438,7 +438,7 @@ function animationCustomByTXT({
   easingForUnlockAnimation = 0.25,
   speedForUnlockAnimation = 0.6,
 
-  animationGroupForUnlockAnimation = 1,
+  animationGroupForUnlockAnimation = 2,
   animationForUnlockAnimation = 1,
 } = {}) {
   document.querySelectorAll(".itemScrollIconPosition").forEach((el) => {
