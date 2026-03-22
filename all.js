@@ -2319,11 +2319,29 @@ function openAppFromCenter() {
 }
 
 function openApp(idApp) {
-  // idApp (1 - 12)
   if (islock) {
     tb_system("Unlock your phone first!");
     return;
   }
+
+  // --- LOGICA SNAKE ---
+  if (idApp == 12) {
+    const app12 = document.getElementById("app12");
+    if (app12) {
+      app12.style.display = "block";
+      // Carica il gioco solo se non è già caricato
+      if (!app12.innerHTML.includes("iframe")) {
+        app12.innerHTML = `
+        <div class="window-header" style="height:40px; background:#1a1a1a; display:flex; align-items:center; padding:0 15px; justify-content:space-between;">
+        <span style="color:white; font-size:14px;">Snake Game</span>
+        <div onclick="document.getElementById('app12').style.display='none'" style="background:#ff5f57; width:12px; height:12px; border-radius:50%; cursor:pointer;"></div>
+        </div>
+        <iframe src="snake.html" style="width:100%; height:calc(100% - 40px); border:none;"></iframe>`;
+      }
+      return; // Esce così non esegue la logica standard se preferisci una finestra custom
+    }
+  }
+
   if (currentOpeningBtn && currentOpeningBtn != boxes[`box${idApp}`]) {
     closeAppToLeft();
     currentOpeningBtn = boxes[`box${idApp}`];
@@ -2396,4 +2414,20 @@ function updatePhoneScaleFullScreen() {
 
 if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", updatePhoneScale);
+}
+function openSnakeApp() {
+  // Carica il gioco nell'app 12
+  const snakeApp = document.getElementById("app12");
+  if (snakeApp) {
+    snakeApp.innerHTML = '<iframe src="snake.html" style="width:100%; height:100%; border:none; border-radius:20px;"></iframe>';
+  }
+  // Avvia l'apertura ufficiale dell'app 12
+  openApp(12);
+}
+function closeSnakeGame() {
+  const app12 = document.getElementById("app12");
+  if (app12) {
+    app12.style.display = "none";
+    app12.innerHTML = ""; // Questo killa il gioco e ferma gli alert
+  }
 }
