@@ -3846,29 +3846,27 @@
       </div>
 
       <!-- SNAKE OVERLAY - dentro .phone -->
-      <div id="snake-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:#0d1117; z-index:999999; border-radius:inherit; overflow:hidden; flex-direction:column; align-items:center; justify-content:space-between; box-sizing:border-box; padding:14px 0 14px;">
+      <div id="snake-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:50px; background:#0d1117; z-index:4000; border-radius:inherit; overflow:hidden;">
 
         <!-- Header -->
-        <div style="width:100%; display:flex; justify-content:space-between; align-items:center; padding:0 18px; box-sizing:border-box; flex-shrink:0;">
-          <button onclick="closeSnake()" style="background:transparent; color:#555; border:none; cursor:pointer; font-size:20px; padding:0; line-height:1;">✕</button>
+        <div id="snake-header" style="position:absolute; top:0; left:0; right:0; height:44px; display:flex; justify-content:space-between; align-items:center; padding:0 18px; box-sizing:border-box;">
+          <button onclick="closeSnake()" style="background:transparent; color:#aaa; border:none; cursor:pointer; font-size:22px; padding:4px; line-height:1; z-index:1;">✕</button>
           <div style="color:#1793d1; font-family:monospace; font-size:14px; font-weight:bold;">🐍 Arch Snake</div>
           <div style="color:white; font-family:monospace; font-size:12px;">Score: <span id="snakeScore" style="color:#1793d1; font-weight:bold;">0</span></div>
         </div>
 
-        <!-- Area centrale che occupa tutto lo spazio disponibile, centra il canvas -->
-        <div style="flex:1; width:100%; display:flex; align-items:center; justify-content:center;">
-          <canvas id="snakeCanvas" width="240" height="240" style="display:block; background:#0a0f1a; border:1px solid #1793d1; border-radius:10px; touch-action:none;"></canvas>
-        </div>
+        <!-- Canvas — posizionato via JS -->
+        <canvas id="snakeCanvas" style="position:absolute; background:#0a0f1a; border:1px solid #1793d1; border-radius:10px;"></canvas>
 
-        <!-- D-pad in basso -->
-        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex-shrink:0;">
-          <div>
-            <button ontouchstart="snakeDpad('UP')" onclick="snakeDpad('UP')" style="width:48px; height:48px; background:#1a2332; border:1px solid #1793d1; border-radius:10px; color:#1793d1; font-size:20px; cursor:pointer;">▲</button>
+        <!-- D-pad — posizionato via JS -->
+        <div id="snake-dpad" style="position:absolute; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:6px;">
+          <div style="display:flex; justify-content:center;">
+            <button ontouchstart="snakeDpad('UP');event.preventDefault()" onclick="snakeDpad('UP')" style="width:64px; height:64px; background:#1a2332; border:2px solid #1793d1; border-radius:14px; color:#1793d1; font-size:26px; cursor:pointer; -webkit-tap-highlight-color:transparent;">▲</button>
           </div>
-          <div style="display:flex; gap:4px;">
-            <button ontouchstart="snakeDpad('LEFT')" onclick="snakeDpad('LEFT')" style="width:48px; height:48px; background:#1a2332; border:1px solid #1793d1; border-radius:10px; color:#1793d1; font-size:20px; cursor:pointer;">◀</button>
-            <button ontouchstart="snakeDpad('DOWN')" onclick="snakeDpad('DOWN')" style="width:48px; height:48px; background:#1a2332; border:1px solid #1793d1; border-radius:10px; color:#1793d1; font-size:20px; cursor:pointer;">▼</button>
-            <button ontouchstart="snakeDpad('RIGHT')" onclick="snakeDpad('RIGHT')" style="width:48px; height:48px; background:#1a2332; border:1px solid #1793d1; border-radius:10px; color:#1793d1; font-size:20px; cursor:pointer;">▶</button>
+          <div style="display:flex; gap:6px;">
+            <button ontouchstart="snakeDpad('LEFT');event.preventDefault()" onclick="snakeDpad('LEFT')" style="width:64px; height:64px; background:#1a2332; border:2px solid #1793d1; border-radius:14px; color:#1793d1; font-size:26px; cursor:pointer; -webkit-tap-highlight-color:transparent;">◀</button>
+            <button ontouchstart="snakeDpad('DOWN');event.preventDefault()" onclick="snakeDpad('DOWN')" style="width:64px; height:64px; background:#1a2332; border:2px solid #1793d1; border-radius:14px; color:#1793d1; font-size:26px; cursor:pointer; -webkit-tap-highlight-color:transparent;">▼</button>
+            <button ontouchstart="snakeDpad('RIGHT');event.preventDefault()" onclick="snakeDpad('RIGHT')" style="width:64px; height:64px; background:#1a2332; border:2px solid #1793d1; border-radius:14px; color:#1793d1; font-size:26px; cursor:pointer; -webkit-tap-highlight-color:transparent;">▶</button>
           </div>
         </div>
 
@@ -3922,7 +3920,46 @@ function snakeDpad(d) {
 
 function openSnakeGame() {
   var overlay = document.getElementById('snake-overlay');
-  overlay.style.display = 'flex';
+  overlay.style.display = 'block';
+
+  var phone = document.querySelector('.phone');
+  var phoneW = phone ? phone.offsetWidth : 320;
+  var phoneH = phone ? phone.offsetHeight : 680;
+  var overlayH = phoneH - 50;
+
+  var headerH = 44;
+  var dpadH = 64 + 6 + 64;
+  var dpadBottom = 16;
+  var gap = 12;
+
+  var availH = overlayH - headerH - gap - dpadH - dpadBottom - gap;
+  var availW = phoneW - 32;
+  var size = Math.floor(Math.min(availH, availW) / 20) * 20;
+  size = Math.max(100, Math.min(size, 260));
+
+  var canvas = document.getElementById('snakeCanvas');
+  canvas.width = size;
+  canvas.height = size;
+  canvas.style.left = Math.round((phoneW - size) / 2) + 'px';
+  var canvasTop = headerH + gap + Math.round((availH - size) / 2);
+  canvas.style.top = canvasTop + 'px';
+
+  var dpad = document.getElementById('snake-dpad');
+  dpad.style.bottom = dpadBottom + 'px';
+
+  var nav = document.querySelector('.nav');
+  var swipe = document.getElementById('swipe_handle');
+  if (nav) nav.style.zIndex = '9999';
+  if (swipe) swipe.style.zIndex = '9999';
+
+  // Hook nella actions map di all.js: swipe home su box12 → chiude snake
+  if (typeof actions !== 'undefined' && typeof boxes !== 'undefined') {
+    actions.set(boxes['box12'], function() {
+      closeSnake();
+      if (typeof closePopup === 'function') closePopup();
+    });
+  }
+
   startSnake();
 }
 
@@ -3930,7 +3967,28 @@ function closeSnake() {
   document.getElementById('snake-overlay').style.display = 'none';
   clearInterval(window._snakeInterval);
   window._snakeInterval = null;
+  var nav = document.querySelector('.nav');
+  var swipe = document.getElementById('swipe_handle');
+  if (nav) nav.style.zIndex = '';
+  if (swipe) swipe.style.zIndex = '';
+  // Rimuove hook dalla actions map
+  if (typeof actions !== 'undefined' && typeof boxes !== 'undefined') {
+    actions.delete(boxes['box12']);
+  }
 }
+
+// MutationObserver su box12 come fallback
+document.addEventListener('DOMContentLoaded', function() {
+  var box12 = document.getElementById('box12');
+  if (!box12) return;
+  var observer = new MutationObserver(function() {
+    var overlay = document.getElementById('snake-overlay');
+    if (!overlay || overlay.style.display === 'none') return;
+    var cs = window.getComputedStyle(box12);
+    if (cs.display === 'none' || parseFloat(cs.opacity) < 0.05) closeSnake();
+  });
+  observer.observe(box12, { attributes: true, attributeFilter: ['style', 'class'] });
+});
 
 function startSnake() {
   clearInterval(window._snakeInterval);
@@ -3965,18 +4023,7 @@ function startSnake() {
     e.preventDefault();
   };
 
-  // Touch / swipe
-  var tx, ty;
-  canvas.ontouchstart = function(e){ tx=e.touches[0].clientX; ty=e.touches[0].clientY; e.preventDefault(); };
-  canvas.ontouchmove = function(e){
-    e.preventDefault();
-    var dx=e.touches[0].clientX-tx, dy=e.touches[0].clientY-ty;
-    var opp={LEFT:'RIGHT',RIGHT:'LEFT',UP:'DOWN',DOWN:'UP'};
-    var d;
-    if(Math.abs(dx)>Math.abs(dy)) d=dx>0?'RIGHT':'LEFT';
-    else d=dy>0?'DOWN':'UP';
-    if(d!==opp[window._snakeDir]) window._snakeNextDir=d;
-  };
+  // Nessun touch handler sul canvas: si usa il d-pad
 
   function gameOver() {
     clearInterval(window._snakeInterval);
