@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Release Notice — v1.5.00</title>
+
+  <!-- Google Font: Noto Sans (700 = bold) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Full-page centered banner */
+    :root {
+      --bg: #2b2b2b; /* dark gray background */
+      --text: #ffffff; /* white text */
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .release-banner {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .release-card {
+      max-width: 960px;
+      width: 100%;
+      padding: 36px 28px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03); /* subtle lift from background */
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .release-title {
+      font-weight: 700;
+      font-size: clamp(20px, 4vw, 36px);
+      letter-spacing: 0.6px;
+      margin: 0 0 8px 0;
+      line-height: 1.05;
+    }
+
+    .release-sub {
+      margin: 0;
+      font-weight: 700;
+      font-size: clamp(14px, 2.2vw, 18px);
+      opacity: 0.95;
+    }
+
+    .meta {
+      margin-top: 14px;
+      font-weight: 700;
+      font-size: 13px;
+      opacity: 0.65;
+    }
+
+    /* small responsive hint if you want a dismiss button */
+    .dismiss {
+      margin-top: 18px;
+      display:inline-block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight:700;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Accessibility: high contrast focus */
+    .dismiss:focus {
+      outline: 3px solid rgba(255,255,255,0.18);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="release-banner" role="region" aria-label="Release announcement">
+    <div class="release-card">
+      <h1 class="release-title">Beta testing has ended — Version 1.5.00 is now officially released.</h1>
+      <p class="release-sub">Thank you to everyone who helped test this release. The stable, v1.5.00 is available now.</p>
+      <p class="meta">Release: v1.5.00 • Stable • Official</p>
+
+      <!-- optional dismiss button (keeps text-only page if you don't want JS) -->
+      <button class="dismiss" onclick="document.querySelector('.release-card').style.display='none'">
+        V1.5.00 stable link
+      </button>
+    </div>
+  </div>
+</body>
+</html>
